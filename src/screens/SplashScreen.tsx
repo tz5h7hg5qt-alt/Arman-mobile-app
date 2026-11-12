@@ -1,24 +1,38 @@
+
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+
 import { colors } from '../theme/colors';
 import { Button } from '../components/Button';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
   onStart: () => void;
 }
 
 export const SplashScreen: React.FC<Props> = ({ onStart }) => {
+  const { t } = useLanguage();
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <View style={styles.logoCircle}>
           <Text style={styles.logoText}>Q</Text>
         </View>
+
         <Text style={styles.title}>QAZYNA</Text>
-        <Text style={styles.subtitle}>Your Money. Your Control.</Text>
+
+        <Text style={styles.subtitle}>
+          {t('slogan')}
+        </Text>
       </View>
+
       <View style={styles.bottom}>
-        <Button title="Баштоо" onPress={onStart} />
+        <Button
+          title={t('start')}
+          onPress={onStart}
+          variant="secondary"
+        />
       </View>
     </View>
   );
@@ -60,6 +74,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.accent,
     marginTop: 8,
+    textAlign: 'center',
   },
   bottom: {
     marginBottom: 20,

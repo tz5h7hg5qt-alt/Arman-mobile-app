@@ -1,46 +1,97 @@
+
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+
 import { colors } from '../theme/colors';
 import { Button } from '../components/Button';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
   onLogin: () => void;
   onGoToSignUp: () => void;
 }
 
-export const LoginScreen: React.FC<Props> = ({ onLogin, onGoToSignUp }) => {
+export const LoginScreen: React.FC<Props> = ({
+  onLogin,
+  onGoToSignUp,
+}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { t, language } = useLanguage();
+
+  const handleLogin = () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert(
+        language === 'ru'
+          ? 'Ошибка'
+          : language === 'kk'
+          ? 'Қате'
+          : 'Error',
+        language === 'ru'
+          ? 'Введите email и пароль'
+          : language === 'kk'
+          ? 'Email мен құпиясөзді енгізіңіз'
+          : 'Please enter your email and password'
+      );
+      return;
+    }
+
+    onLogin();
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Кош келдиңиз!</Text>
-      <Text style={styles.subHeader}>QAZYNA аккаунтуңузга кириңиз</Text>
+      <Text style={styles.header}>{t('welcome')}</Text>
+
+      <Text style={styles.subHeader}>
+        {t('loginSubtitle')}
+      </Text>
 
       <View style={styles.form}>
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>{t('email')}</Text>
+
         <TextInput
           style={styles.input}
           placeholder="example@gmail.com"
+          placeholderTextColor={colors.textMuted}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
         />
 
-        <Text style={styles.label}>Сыр сөз</Text>
+        <Text style={styles.label}>{t('password')}</Text>
+
         <TextInput
           style={styles.input}
           placeholder="••••••••"
+          placeholderTextColor={colors.textMuted}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
 
-        <Button title="Кирүү" onPress={onLogin} />
+        <Button
+          title={t('login')}
+          onPress={handleLogin}
+        />
 
-        <TouchableOpacity onPress={onGoToSignUp} style={styles.linkContainer}>
-          <Text style={styles.linkText}>Аккаунтуңуз жокпу? <Text style={styles.bold}>Катталуу</Text></Text>
+        <TouchableOpacity
+          onPress={onGoToSignUp}
+          style={styles.linkContainer}
+        >
+          <Text style={styles.linkText}>
+            {t('noAccount')}{' '}
+            <Text style={styles.bold}>{t('signup')}</Text>
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -82,6 +133,7 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 16,
     fontSize: 16,
+    color: colors.text,
   },
   linkContainer: {
     marginTop: 16,

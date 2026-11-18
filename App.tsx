@@ -16,6 +16,7 @@ import { TransactionsScreen } from './src/screens/TransactionsScreen';
 import { colors } from './src/theme/colors';
 import { LanguageProvider } from './src/i18n/LanguageContext';
 import { TransactionProvider } from './src/context/TransactionContext';
+import { SavingsProvider } from './src/context/SavingsContext';
 
 function AppContent() {
   const [screen, setScreen] = useState<
@@ -81,7 +82,9 @@ export default function App() {
   return (
     <LanguageProvider>
       <TransactionProvider>
-        <AppContent />
+        <SavingsProvider>
+          <AppContent />
+        </SavingsProvider>
       </TransactionProvider>
     </LanguageProvider>
   );
